@@ -23,7 +23,41 @@
 #include "chplexit.h"
 #include "config.h"
 
+#ifdef USE_OCR_TASKS
+ocrGuid_t mainEdt(u32 paramc, u64 * paramv, u32 depc, ocrEdtDep_t depv[]);
+
+ocrGuid_t mainEdt(u32 paramc, u64 * paramv, u32 depc, ocrEdtDep_t depv[]) {
+  int argc = getArgc(depv[0].ptr), i;
+  char *argv[argc];
+  for(i=0;i<argc;i++)
+    argv[i] = getArgv(depv[0].ptr, i);
+
+#elif defined(USE_HCLIB_TASKS)
+void entrypoint(void *data);
+
+typedef struct _main_captures {
+    int argc;
+    char **argv;
+} main_captures;
+
+int main(int argc, char **argv) {
+    main_captures caps;
+    caps.argc = argc;
+    caps.argv = argv;
+
+    char *deps[] = {"system"};
+    hclib_launch(entrypoint, &caps, deps, 1);
+
+    return 0;
+}
+
+void entrypoint(void *data) {
+    int argc = ((main_captures *)data)->argc;
+    char **argv = ((main_captures *)data)->argv;
+
+#else
 int main(int argc, char* argv[]) {
+#endif
 
   // Initialize the runtime
   chpl_rt_init(argc, argv);                 
@@ -35,5 +69,12 @@ int main(int argc, char* argv[]) {
   // or 0 if it didn't return anything
   chpl_rt_finalize(chpl_gen_main_arg.return_value);
 
+#ifdef USE_OCR_TASKS
+  return NULL_GUID;
+#elif USE_HCLIB_TASKS
+  ;
+#else
   return 0; // should never get here
+#endif
 }
+

@@ -1,0 +1,37 @@
+# Copyright 2004-2016 Cray Inc.
+# Other additional copyright holders may be indicated within.
+# Copyright 2016 Rice University
+#
+# The entirety of this work is licensed under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+#
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Use Vienna's OCR version. Set to ocr type (vsm) if you want to link with
+# the Vienna version of OCR
+OCR_VIENNA            ?= no
+
+ifeq ($(OCR_VIENNA), no)
+
+RUNTIME_CFLAGS += -w -DUSE_OCR_TASKS -DENABLE_EXTENSION_LEGACY -DENABLE_EXTENSION_RTITF
+RUNTIME_INCLS += -I${OCR_INSTALL}/include
+RUNTIME_LFLAGS += -L${OCR_INSTALL}/lib -locr_${OCR_TYPE}
+CHPL_MAKE_THREADS=pthreads
+
+else
+
+RUNTIME_CFLAGS += -DUSE_OCR_TASKS -DENABLE_EXTENSION_LEGACY -DENABLE_EXTENSION_RTITF -DUSE_OCR_VIENNA
+RUNTIME_INCLS += -I${OCR_INSTALL_V}/include
+RUNTIME_LFLAGS += -L${OCR_INSTALL_V}/lib -locr_${OCR_VIENNA} -L${TBBROOT}/lib -ltbb -ltbbmalloc
+CHPL_MAKE_THREADS=pthreads
+
+endif
