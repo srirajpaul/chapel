@@ -1,7 +1,7 @@
 /*
- * Copyright 2004-2016 Cray Inc.
+ * Copyright 2004-2017 Cray Inc.
  * Other additional copyright holders may be indicated within.
- * Copyright 2016 Rice University
+ * Copyright 2017 Rice University
  * 
  * The entirety of this work is licensed under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except

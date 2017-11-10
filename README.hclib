@@ -1,0 +1,37 @@
+
+Authors (Listed in alphabetic order): Max Grossman and Jun Shirako
+Rice University, Houston TX, USA
+
+1) Download and Build HClib ( https://github.com/habanero-rice/hclib )
+  1) clone and install jsmn JSON parser:
+     git clone https://github.com/zserge/jsmn.git
+     cd jsmn
+     make
+     export JSMN_HOME=$PWD
+
+  2) clone the HClib repository:
+     git clone -b resource_workers https://github.com/habanero-rice/hclib.git
+     cd hclib
+     git checkout fdddd621de6c27a91a4271b523b29a022b44c648
+
+  3) export the HClib environment variables and install:
+     ./install.sh
+     source hclib-install/bin/hclib_setup_env.sh
+     export HCLIB_HOME=$PWD
+     export LD_LIBRARY_PATH=${HCLIB_ROOT}/lib:$LD_LIBRARY_PATH
+     cd modules/system/
+     make
+     export LD_LIBRARY_PATH=${HCLIB_HOME}/modules/system/lib:$LD_LIBRARY_PATH
+
+2) Install Chapel
+  1) Set chapel environment variables and set CHPL_TASKS to hclib:
+     source util/quickstart/setchplenv.bash
+     export CHPL_TASKS=hclib
+
+  2) Build and install chapel:
+     make
+
+  3) Compile an example program:
+     chpl -o hello examples/hello.chpl
+     ./hello
+

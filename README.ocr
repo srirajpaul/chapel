@@ -1,0 +1,31 @@
+
+Authors (Listed in alphabetic order): Akihiro Hayashi and Sri Raj Paul
+Rice University, Houston TX, USA
+
+1) Download and Build OCR ( https://xstack.exascale-tech.com/wiki/index.php/Getting_Started )
+  1) clone the OCR repository:
+     git clone -b master https://xstack.exascale-tech.com/git/public/ocr.git
+     cd ocr
+     git checkout 9470b7f49d74f559549fbecb3b3475fa5d0bfc96
+     cd ocr
+
+  2) export the OCR environment variables and make:
+     export OCR_TYPE=x86
+     export OCR_ROOT=$PWD
+     export OCR_INSTALL=$OCR_ROOT/install
+     export OCR_CONFIG=$OCR_INSTALL/share/ocr/config/$OCR_TYPE/default.cfg
+     export LD_LIBRARY_PATH=$OCR_INSTALL/lib:$LD_LIBRARY_PATH
+     cd build; make install
+
+2) Install Chapel
+  1) Set chapel environment variables and set CHPL_TASKS to OCR:
+     source util/quickstart/setchplenv.bash
+     export CHPL_TASKS=ocr
+
+  2) Build and install chapel:
+     make
+
+  3) Compile an example program:
+     chpl -o hello examples/hello.chpl
+     ./hello
+
